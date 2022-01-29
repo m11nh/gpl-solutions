@@ -1,13 +1,10 @@
 // calculates number of bits in a number that are 1
 package main
 
-import "fmt"
-
-// pc[i] is the population count of i.
-var pc [256]byte
-
 func main() {
-	fmt.Println(PopCount(1))
+	for i := 0; i < 10000000; i++ {
+		PopCount(1099511627776)
+	}
 }
 
 // PopCount returns the population count (number of set bits) of x.
@@ -20,3 +17,8 @@ func PopCount(x uint64) int {
 	}
 	return count
 }
+
+
+/*
+	Better than 2.3 if we only use PopCount once, as we only go through 64 operations, instead of the init 256 operations needed in 2.3
+*/
