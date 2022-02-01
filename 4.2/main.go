@@ -17,6 +17,7 @@ func init() {
 	flag.Parse()
 	if !validShaType(shaType) {
 		fmt.Fprintf(os.Stderr, "%d is an invalid sha type\n", shaType)
+		os.Exit(1)
 	}
 }
 
@@ -31,19 +32,28 @@ func validShaType(a int) bool {
 func main() {
 	var i string 
 	fmt.Scanf("%s", &i)
-	r := sha(shaType, []byte(i))
-	fmt.Printf("the sha%d of %s is: %x\n", shaType, i, r)
+	f := typeToSHA(shaType)
+	fmt.Printf("the sha%d of %s is: %x\n", shaType, i, f([]byte(i)))
 }
 
-// Gets the sha type, then returns the result of applying the relevant sha function 
-func sha(i int, s []byte) interface{} {
-	v := []byte(s)
-	switch i {
-	case 256:
-		return sha256.Sum256(v)
-	case 384:
-		return sha512.Sum384(v)
+// provided the sha type, returns the relevant sha function
+func typeToSHA(t int) func(b []byte) []byte {
+	switch t {
+	case 256: 
+		return func(b []byte) []byte {
+			x := sha256.Sum256(b)
+			return x[:]
+		}
+	case 384: 
+		return func(b []byte) []byte {
+			x := sha512.Sum384(b)
+			return x[:]
+		}
 	default:
-		return sha512.Sum512(v)
+		// 512
+		return func(b []byte) []byte {
+			x := sha512.Sum512(b)
+			return x[:]
+		}
 	}
 }
