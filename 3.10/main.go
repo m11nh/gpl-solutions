@@ -35,4 +35,3 @@ func comma(s string) string {
 	}
 	return r.String()
 }
-

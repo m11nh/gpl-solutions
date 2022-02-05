@@ -26,7 +26,7 @@ func reverse(s []byte) {
 	for i := 0; i < len(s); {
 		_, size := utf8.DecodeRune(s[i:])
 		rev(s[i:i + size])
-		i+=size
+		i += size
 	}
 	rev(s[:])
 }
